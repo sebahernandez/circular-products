@@ -46,19 +46,49 @@ function initOrbitalPositions() {
 
     orbitalPositions.push({ x, y });
 
-    // Inicializar las imágenes una sola vez, asegurando que se repitan cíclicamente
+    // Inicializar las imágenes una sola vez, asegurando una distribución uniforme
     const img = orbitElements[i].querySelector("img");
-    const imgIndex = ((i % images.length) + images.length) % images.length;
+    const imgIndex = i % images.length;
     img.src = images[imgIndex];
 
     // Add click event to each orbit element
     orbitElements[i].addEventListener("click", function () {
-      // Calculate how many steps to rotate to bring this element to the center
-      const steps = i === 0 ? 0 : orbitElements.length - i;
+      // Calculate which image is at this position
+      const clickedImageIndex = imgIndex;
 
-      // Rotate that many steps
+      // If this image is already centered, do nothing
+      if (clickedImageIndex === currentIndex) {
+        return;
+      }
+
+      // Calculate the shortest path to rotate to this image (clockwise or counterclockwise)
+      let stepsToMove;
+      if (clickedImageIndex > currentIndex) {
+        const clockwiseSteps = clickedImageIndex - currentIndex;
+        const counterClockwiseSteps =
+          currentIndex + images.length - clickedImageIndex;
+        stepsToMove =
+          clockwiseSteps <= counterClockwiseSteps
+            ? clockwiseSteps
+            : -counterClockwiseSteps;
+      } else {
+        const counterClockwiseSteps = currentIndex - clickedImageIndex;
+        const clockwiseSteps = clickedImageIndex + images.length - currentIndex;
+        stepsToMove =
+          clockwiseSteps <= counterClockwiseSteps
+            ? clockwiseSteps
+            : -counterClockwiseSteps;
+      }
+
+      // Rotate in the appropriate direction the required number of steps
+      const direction = stepsToMove > 0 ? 1 : -1;
+      const steps = Math.abs(stepsToMove);
+
+      // Apply the rotation steps one by one with a delay between each
       for (let j = 0; j < steps; j++) {
-        rotate(1);
+        setTimeout(() => {
+          rotate(direction);
+        }, j * 300); // 300ms delay between each step
       }
     });
   }
@@ -80,13 +110,30 @@ function renderOrbitImages() {
 
     // Las imágenes mantienen su posición vertical
     img.style.transform = `rotate(${-rotationAngle}deg)`;
+
+    // Calculate which image should be shown at this orbital position
+    // This ensures images are evenly distributed and synchronized with rotation
+    const imageOffset =
+      Math.floor(rotationAngle / (360 / images.length)) % images.length;
+    const imgIndex =
+      (((i + imageOffset) % images.length) + images.length) % images.length;
+    img.src = images[imgIndex];
   }
 
-  // Actualizar la imagen central - currentIndex ya está normalizado
+  // Actualizar la imagen central
   centerImage.src = images[currentIndex];
 }
 
 function rotate(direction) {
+  // Start fade out animation for center image
+  const centerImageContainer = document.getElementById("centerImage");
+  centerImageContainer.classList.add("fade-out");
+
+  // Calculate how much we should rotate based on the number of images, not orbital elements
+  // This ensures we rotate to show each image instead of skipping
+  const angleStep = ((2 * Math.PI) / images.length) * direction;
+  rotationAngle += angleStep * (180 / Math.PI); // Convertir radianes a grados
+
   // Actualizar el índice actual y asegurar que siempre esté dentro del rango válido
   if (direction > 0) {
     currentIndex = (currentIndex + 1) % images.length;
@@ -94,20 +141,29 @@ function rotate(direction) {
     currentIndex = (currentIndex - 1 + images.length) % images.length;
   }
 
-  // Calculamos cuántos grados debemos rotar para llegar a la siguiente posición
-  const angleStep = ((2 * Math.PI) / orbitElements.length) * direction;
-  rotationAngle += angleStep * (180 / Math.PI); // Convertir radianes a grados
-
   // Aplicar las transformaciones de rotación
   orbitPath.style.transform = `rotate(${rotationAngle}deg)`;
   orbitContainer.style.transform = `rotate(${rotationAngle}deg)`;
 
+  // Update all orbit images
   renderOrbitImages();
+
+  // After the rotation has started, update the center image with fade in
+  setTimeout(() => {
+    centerImage.src = images[currentIndex];
+    centerImageContainer.classList.remove("fade-out");
+    centerImageContainer.classList.add("fade-in");
+
+    // Remove the fade-in class after animation completes
+    setTimeout(() => {
+      centerImageContainer.classList.remove("fade-in");
+    }, 400);
+  }, 200);
 }
 
 // Auto rotation variables
 let isAnimating = false;
-let rotationSpeed = 500; // milliseconds between rotations (slower, more pausado)
+let rotationSpeed = 800; // milliseconds between rotations (slower to allow for smoother transitions)
 let isButtonHeld = false;
 let rotationDirection = 0;
 let animationFrameId = null;
@@ -205,6 +261,7 @@ function startAutoRotation() {
       return;
     }
 
+    // Only rotate if enough time has passed to complete previous rotation
     if (timestamp - lastRotationTime >= rotationSpeed) {
       rotate(rotationDirection);
       lastRotationTime = timestamp;
