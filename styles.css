@@ -22,6 +22,7 @@ body {
   z-index: 1;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  transform-origin: center center;
 }
 
 .orbit-path {
@@ -31,6 +32,7 @@ body {
   z-index: 0;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  transform-origin: center center;
 }
 
 .orbit-path circle {
@@ -46,9 +48,9 @@ body {
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 1;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
   cursor: pointer;
 }
 
@@ -69,7 +71,7 @@ body {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -92,12 +94,23 @@ body {
   clip-path: circle(180px at center); /* centro visible aumentado */
 }
 
+.mask-front {
+  position: absolute;
+  top: 360px;
+  width: 100%;
+  height: 370px;
+  background: rgb(255, 255, 255);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .controls {
-  margin-top: 40px;
+  margin-top: -40px;
   display: flex;
-  gap: 100px; /* Separación entre botones */
+  gap: 400px;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
 
 button {

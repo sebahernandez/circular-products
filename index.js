@@ -33,10 +33,15 @@ let orbitalPositions = [];
 function initOrbitalPositions() {
   // Calculate the initial positions of orbit elements
   orbitalPositions = [];
-  for (let i = 0; i < orbitElements.length; i++) {
-    // Distribute elements evenly around the full circle (360 degrees or 2π radians)
-    const angle = (i / orbitElements.length) * 2 * Math.PI;
-    const x = Math.cos(angle) * radius + center - 60; // Ajustado para el nuevo tamaño (120px/2)
+
+  const totalElements = orbitElements.length;
+
+  for (let i = 0; i < totalElements; i++) {
+    // Calcular el ángulo para este elemento, comenzando desde arriba (-90 grados o -PI/2)
+    const angle = (i / totalElements) * 2 * Math.PI - Math.PI / 2;
+
+    // Calcular coordenadas X e Y basadas en ese ángulo
+    const x = Math.cos(angle) * radius + center - 60;
     const y = Math.sin(angle) * radius + center - 60;
 
     orbitalPositions.push({ x, y });
@@ -89,14 +94,9 @@ function rotate(direction) {
     currentIndex = (currentIndex - 1 + images.length) % images.length;
   }
 
-  // Actualizar el ángulo de rotación
-  const angleIncrement = direction * (360 / orbitElements.length);
-  rotationAngle += angleIncrement;
-
-  // Mantener el ángulo en un rango razonable
-  if (Math.abs(rotationAngle) > 360) {
-    rotationAngle = rotationAngle % 360;
-  }
+  // Calculamos cuántos grados debemos rotar para llegar a la siguiente posición
+  const angleStep = ((2 * Math.PI) / orbitElements.length) * direction;
+  rotationAngle += angleStep * (180 / Math.PI); // Convertir radianes a grados
 
   // Aplicar las transformaciones de rotación
   orbitPath.style.transform = `rotate(${rotationAngle}deg)`;
