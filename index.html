@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Slider productos</title>
+  </head>
+  <body>
+    <div class="circle-slider" id="circleSlider">
+      <!-- Dashed orbit -->
+      <svg class="orbit-path" viewBox="0 0 700 700">
+        <circle cx="350" cy="350" r="300"></circle>
+      </svg>
+
+      <!-- Orbiting images container -->
+      <div class="orbit-container" id="orbitContainer">
+        <!-- Orbiting images -->
+        <div class="orbit-image" id="img1"><img /></div>
+        <div class="orbit-image" id="img2"><img /></div>
+        <div class="orbit-image" id="img3"><img /></div>
+        <div class="orbit-image" id="img4"><img /></div>
+        <div class="orbit-image" id="img5"><img /></div>
+        <div class="orbit-image" id="img6"><img /></div>
+        <div class="orbit-image" id="img7"><img /></div>
+        <div class="orbit-image" id="img8"><img /></div>
+        <div class="orbit-image" id="img9"><img /></div>
+      </div>
+
+      <!-- Capa blanca que oculta parte de la órbita -->
+      <div class="mask"></div>
+
+      <!-- Imagen central destacada -->
+      <div class="center-image" id="centerImage">
+        <img src="https://picsum.photos/id/100/300/300" alt="central" />
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="prevBtn">⟵</button>
+      <button id="nextBtn">⟶</button>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+body {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
+}
+
+.circle-slider {
+  position: relative;
+  width: 700px;
+  height: 700px;
+}
+
+.orbit-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.orbit-path {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.orbit-path circle {
+  fill: none;
+  stroke: #aaa;
+  stroke-dasharray: 12 10;
+  stroke-width: 3;
+}
+
+.orbit-image {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.orbit-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.center-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.center-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 700px;
+  height: 700px;
+  background: rgb(255, 255, 255);
+  z-index: 2;
+  pointer-events: none;
+  clip-path: circle(180px at center); /* centro visible aumentado */
+}
+
+.controls {
+  margin-top: 40px;
+}
+
+button {
+  background: #ff50c3;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 20px;
+  border-radius: 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:hover {
+  background: #d13fa1;
+}
+
+button:active {
+  transform: scale(0.95);
+  background: #b5357f;
+}
