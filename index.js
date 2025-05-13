@@ -32,8 +32,6 @@ let orbitalPositions = [];
 
 function initOrbitalPositions() {
   // Calculate the initial positions of orbit elements
-
-  // Calculate the initial positions of orbit elements
   orbitalPositions = [];
   for (let i = 0; i < orbitElements.length; i++) {
     // Distribute elements evenly around the full circle (360 degrees or 2π radians)
@@ -43,8 +41,10 @@ function initOrbitalPositions() {
 
     orbitalPositions.push({ x, y });
 
-    // Forzar reflow para aplicar los cambios sin transición
-    void orbitElements[i].offsetWidth;
+    // Inicializar las imágenes una sola vez, asegurando que se repitan cíclicamente
+    const img = orbitElements[i].querySelector("img");
+    const imgIndex = ((i % images.length) + images.length) % images.length;
+    img.src = images[imgIndex];
 
     // Add click event to each orbit element
     orbitElements[i].addEventListener("click", function () {
@@ -71,42 +71,34 @@ function renderOrbitImages() {
 
     // Position elements on their circular path and rotate them
     const img = orbitElements[i].querySelector("img");
-    orbitElements[
-      i
-    ].style.transform = `translate(${pos.x}px, ${pos.y}px) rotate(${rotationAngle}deg)`;
+    orbitElements[i].style.transform = `translate(${pos.x}px, ${pos.y}px)`;
 
-    // Keep the images upright while the container rotates
+    // Las imágenes mantienen su posición vertical
     img.style.transform = `rotate(${-rotationAngle}deg)`;
-
-    // Calculate image index for infinite rotation in both directions
-    let relativeIndex = currentIndex + i;
-    let imgIndex =
-      ((relativeIndex % images.length) + images.length) % images.length;
-
-    // Update image source
-    img.src = images[imgIndex];
   }
 
-  // Update center image with infinite rotation support
-  let centerImgIndex =
-    ((currentIndex % images.length) + images.length) % images.length;
-  centerImage.src = images[centerImgIndex];
+  // Actualizar la imagen central - currentIndex ya está normalizado
+  centerImage.src = images[currentIndex];
 }
 
 function rotate(direction) {
-  // Update current index for infinite rotation
-  currentIndex += direction;
+  // Actualizar el índice actual y asegurar que siempre esté dentro del rango válido
+  if (direction > 0) {
+    currentIndex = (currentIndex + 1) % images.length;
+  } else {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+  }
 
-  // Calculate rotation angle increment for smooth animation
+  // Actualizar el ángulo de rotación
   const angleIncrement = direction * (360 / orbitElements.length);
   rotationAngle += angleIncrement;
 
-  // Keep rotationAngle in a reasonable range
-  if (Math.abs(rotationAngle) > 3600) {
+  // Mantener el ángulo en un rango razonable
+  if (Math.abs(rotationAngle) > 360) {
     rotationAngle = rotationAngle % 360;
   }
 
-  // Apply smooth rotation transform to orbit elements
+  // Aplicar las transformaciones de rotación
   orbitPath.style.transform = `rotate(${rotationAngle}deg)`;
   orbitContainer.style.transform = `rotate(${rotationAngle}deg)`;
 
@@ -152,15 +144,15 @@ function setupButtonListeners() {
     stopAutoRotation();
   });
 
-  // Simple click handlers for mobile
+  // Simple click handlers for mobile y desktop
   prevBtn.addEventListener("click", () => {
-    if (!isButtonHeld) {
+    if (!isAnimating) {
       rotate(-1);
     }
   });
 
   nextBtn.addEventListener("click", () => {
-    if (!isButtonHeld) {
+    if (!isAnimating) {
       rotate(1);
     }
   });
