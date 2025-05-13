@@ -107,7 +107,7 @@ function rotate(direction) {
 
 // Auto rotation variables
 let isAnimating = false;
-let rotationSpeed = 300; // milliseconds between rotations (slower, more pausado)
+let rotationSpeed = 500; // milliseconds between rotations (slower, more pausado)
 let isButtonHeld = false;
 let rotationDirection = 0;
 let animationFrameId = null;
