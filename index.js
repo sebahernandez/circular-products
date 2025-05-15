@@ -30,6 +30,16 @@ let rotationAngle = 0;
 // Initialize positions for orbit elements
 let orbitalPositions = [];
 
+// Función para generar color aleatorio en formato HEX
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 function initOrbitalPositions() {
   // Calculate the initial positions of orbit elements
   orbitalPositions = [];
@@ -132,6 +142,10 @@ function rotate(direction) {
   // Start fade out animation for center image
   const centerImageContainer = document.getElementById("centerImage");
   centerImageContainer.classList.add("fade-out");
+
+  // Cambiar el color del fondo del contenedor
+  const sectionContainer = document.querySelector('.section-container');
+  sectionContainer.style.backgroundColor = getRandomColor();
 
   // Para mantener la alineación vertical, necesitamos rotar exactamente en incrementos basados en el número de imágenes
   // Esto garantiza que al completar una rotación, siempre tengamos un elemento en la parte superior e inferior
