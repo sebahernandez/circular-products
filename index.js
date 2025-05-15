@@ -32,8 +32,8 @@ let orbitalPositions = [];
 
 // Función para generar color aleatorio en formato HEX
 function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
+  const letters = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -125,16 +125,22 @@ function renderOrbitImages() {
     // Las imágenes mantienen su posición vertical
     img.style.transform = `rotate(${-rotationAngle}deg)`;
 
-    // Calculate which image should be shown at this orbital position
-    // This ensures images are evenly distributed and synchronized with rotation
-    const imageOffset =
-      Math.floor(rotationAngle / (360 / images.length)) % images.length;
+    // Calcular el índice de imagen correcto basado en la posición actual
+    const normalizedAngle = ((rotationAngle % 360) + 360) % 360; // Asegura que el ángulo esté entre 0 y 360
+    const segmentSize = 360 / images.length;
+    const currentSegment = Math.floor(normalizedAngle / segmentSize);
+
+    // Calcular el índice de imagen considerando la dirección de rotación
     const imgIndex =
-      (((i + imageOffset) % images.length) + images.length) % images.length;
-    img.src = images[imgIndex];
+      (((i - currentSegment) % images.length) + images.length) % images.length;
+
+    // Solo actualizar la imagen si realmente necesita cambiar
+    if (img.src !== images[imgIndex]) {
+      img.src = images[imgIndex];
+    }
   }
 
-  // Actualizar la imagen central
+  // Actualizar la imagen central de manera sincronizada
   centerImage.src = images[currentIndex];
 }
 
@@ -144,7 +150,7 @@ function rotate(direction) {
   centerImageContainer.classList.add("fade-out");
 
   // Cambiar el color del fondo del contenedor
-  const sectionContainer = document.querySelector('.section-container');
+  const sectionContainer = document.querySelector(".section-container");
   sectionContainer.style.backgroundColor = getRandomColor();
 
   // Para mantener la alineación vertical, necesitamos rotar exactamente en incrementos basados en el número de imágenes
