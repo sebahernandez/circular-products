@@ -4,9 +4,47 @@ body {
   flex-direction: column;
   align-items: center;
   font-family: sans-serif;
-  height: 100vh;
-  justify-content: center;
+  min-height: 100vh;
   margin: 0;
+  padding: 20px;
+}
+
+.section-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.section-title {
+  flex: 1;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 400px;
+}
+
+.section-title h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.section-title p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.container-slider {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .circle-slider {
@@ -100,13 +138,14 @@ body {
   background: rgb(255, 255, 255);
   z-index: 2;
   pointer-events: none;
-  clip-path: circle(180px at center); /* centro visible aumentado */
+  clip-path: circle(190px at center); /* Centro visible ligeramente aumentado */
 }
 
 .mask-front {
   position: absolute;
-  top: 300px;
-  width: 100%;
+  top: 290px;
+  left: 0;
+  width: 700px; /* Ancho exacto igual al del slider */
   height: 470px;
   background: rgb(255, 255, 255);
   z-index: 2;
@@ -114,12 +153,29 @@ body {
 }
 
 .controls {
-  margin-top: -40px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
   display: flex;
   gap: 400px;
   justify-content: center;
   align-items: center;
   z-index: 999;
+}
+
+@media (max-width: 1200px) {
+  .section-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .section-title {
+    max-width: 80%;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 }
 
 button {

@@ -36,9 +36,13 @@ function initOrbitalPositions() {
 
   const totalElements = orbitElements.length;
 
+  // Ajustamos el ángulo de inicio para que el primer elemento esté exactamente en la parte superior
+  // y otro elemento esté exactamente en la parte inferior
+  const startAngle = -Math.PI / 2; // -90 grados (parte superior)
+
   for (let i = 0; i < totalElements; i++) {
-    // Calcular el ángulo para este elemento, comenzando desde arriba (-90 grados o -PI/2)
-    const angle = (i / totalElements) * 2 * Math.PI - Math.PI / 2;
+    // Calculamos el ángulo de manera que siempre haya un elemento en la parte superior e inferior
+    const angle = startAngle + (i / totalElements) * 2 * Math.PI;
 
     // Calcular coordenadas X e Y basadas en ese ángulo
     const x = Math.cos(angle) * radius + center - 60;
@@ -129,8 +133,8 @@ function rotate(direction) {
   const centerImageContainer = document.getElementById("centerImage");
   centerImageContainer.classList.add("fade-out");
 
-  // Calculate how much we should rotate based on the number of images, not orbital elements
-  // This ensures we rotate to show each image instead of skipping
+  // Para mantener la alineación vertical, necesitamos rotar exactamente en incrementos basados en el número de imágenes
+  // Esto garantiza que al completar una rotación, siempre tengamos un elemento en la parte superior e inferior
   const angleStep = ((2 * Math.PI) / images.length) * direction;
   rotationAngle += angleStep * (180 / Math.PI); // Convertir radianes a grados
 
