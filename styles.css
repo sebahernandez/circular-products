@@ -6,26 +6,29 @@ body {
   font-family: sans-serif;
   min-height: 100vh;
   margin: 0;
-  padding: 20px;
 }
 
 .section-container {
+  position: relative;
+  padding: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
+  justify-content: center;
   width: 100%;
+  max-width: 100%;
+  background-color: #ff50c3;
 }
 
 .section-title {
-  flex: 1;
+  flex: 0 0 auto;
   padding: 0 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   max-width: 400px;
+  margin-right: 20px;
 }
 
 .section-title h1 {
@@ -41,7 +44,7 @@ body {
 }
 
 .container-slider {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,7 +78,7 @@ body {
 
 .orbit-path circle {
   fill: none;
-  stroke: #aaa;
+  stroke: #e9e9e9;
   stroke-dasharray: 12 10;
   stroke-width: 3;
 }
@@ -141,15 +144,24 @@ body {
   clip-path: circle(190px at center); /* Centro visible ligeramente aumentado */
 }
 
-.mask-front {
+.custom-shape-divider-bottom-1747321538 {
   position: absolute;
-  top: 290px;
+  bottom: 0;
   left: 0;
-  width: 700px; /* Ancho exacto igual al del slider */
-  height: 470px;
-  background: rgb(255, 255, 255);
-  z-index: 2;
-  pointer-events: none;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-bottom-1747321538 svg {
+  position: relative;
+  display: block;
+  width: calc(300% + 1.3px);
+  height: 800px;
+}
+
+.custom-shape-divider-bottom-1747321538 .shape-fill {
+  fill: white;
 }
 
 .controls {
@@ -169,12 +181,18 @@ body {
     flex-direction: column;
     gap: 30px;
   }
-  
+
   .section-title {
     max-width: 80%;
     text-align: center;
     align-items: center;
     margin-bottom: 20px;
+    margin-right: 0;
+  }
+
+  .container-slider {
+    width: 100%;
+    max-width: 700px;
   }
 }
 
